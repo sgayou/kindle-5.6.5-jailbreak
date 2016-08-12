@@ -45,7 +45,7 @@ The most obvious canidate for exploitation. Old version of Webkit, plenty of PoC
 ### Logic flaws in the Java
 Many embedded systems contain debugging mechanisms that aren't fully removed for release. This usually isn't true in popular consumer devices that have been out for some time, but it's always worth looking for something simple like this as a first step.
 
-There are hidden flags in the Java based Kindle GUI that get parsed from /mnt/us. (the user storage location exposed when the Kindle is connected over USB to a computer). Worth decompiling the Java to check for any obviously unsafe or hidden debug functionality. While there is quite a bit of hidden functionality that's exposed through this method, I didn't find much after a cursory look. Did manage to find a debug dialog that called python against a user script in the /mnt/us user store. Unfortunately, accessing the dialog would require a separate vulnerability and python being installed on the Kindle. Turns out python is only on the factory provisioning debug images and wiped during sales provisioning.
+There are hidden flags in the Java based Kindle GUI that get parsed from /mnt/us (the user storage location exposed when the Kindle is connected over USB to a computer). Worth decompiling the Java to check for any obviously unsafe or hidden debug functionality. While there is quite a bit of hidden functionality that's exposed through this method, I didn't find much after a cursory look. Did manage to find a debug dialog that called python against a user script in the /mnt/us user store. Unfortunately, accessing the dialog would require a separate vulnerability and python being installed on the Kindle. Turns out python is only on the factory provisioning debug images and wiped during sales provisioning.
 
 ### Firmware Update Mechanism
 The Kindle firmware update system has been used in the past to get code execution on the device via crafting trusted files. Downgrades are currently blocked, so definitely an interesting place to look for mistakes. Never got around to this, still an interesting avenue.
@@ -85,7 +85,7 @@ Run through the debug search bar commands. ;dm writes system logs to the user st
 Once you finish a look around the operating system, you'll hopefully have a few good ideas on where to start. The most logical choice at the time was Webkit after a search for basic debug functionality that could lead to code execution failed.
 
 ## Crashing Webkit
-Because the version of Webkit on 5.6.5 is so old, it's potentially vulnerable to a number of CVEs. There's no reason to spent hundreds looking for something new if we can exploit an older flaw. In this case, the hardest part of the process was done for us. Always patch your systems!
+Because the version of Webkit on 5.6.5 is so old, it's potentially vulnerable to a number of CVEs. There's no reason to spend hundreds looking for something new if we can exploit an older flaw. In this case, the hardest part of the process was done for us. Always patch your systems!
 
 There are several PoCs that crash the browser. If you watch system logs as the browser goes down, you'll get a stack trace from the mesquite process. Attach gdbserver to the process and look at the crash.
 

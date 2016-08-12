@@ -4,7 +4,7 @@ This is a write-up on the development of the [Kindle 5.6.5 Webkit based jailbrea
 This document details the steps and thought processes I went through when developing the jailbreak. Ideally this will be a useful map or starting point for anyone looking at the system in the future. Most of this was written from memory after the fact, so there might be a few issues due to memory lapses. Please send any feedback or corrections to github.scott@gmail.com.
 
 ## Introduction
-The goal of this jailbreak was to gain root on the system with the least amount of effort required. As such, it takes advantage of Webkit crash PoC code that already exists. The jailbreak was developed in around 100 hours during August 2015 to September 2015. Submitted to Amazon, and finally released in February after a patch came out.
+The goal of this jailbreak was to gain root on the system with the least amount of effort required. As such, it takes advantage of Webkit crash PoC code that already exists. The jailbreak was developed in around 100 during August and September of 2015. It was then submitted to Amazon Security and finally released in February 2016 after patch with a fix was released.
 
 ## History of Kindle Jailbreaks
 This section is not intended to be a complete or even entirely accurate description of previous Kindle jailbreaking efforts.
@@ -43,7 +43,7 @@ Fertile ground for new exploits. To my knowledge, these subsystems haven't been 
 The most obvious canidate for exploitation. Old version of Webkit, plenty of PoC code already exists. Auditing a super old version of Webkit probably isn't a great use of anyone's time, but if we could get an existing CVE to work, fantastic!
 
 ### Logic flaws in the Java
-Many embedded systems contain debugging mechanisms that aren't fully removed for release. This usually isn't true in popular consumer devices that have been out for some time, but it's always worth looking for something simple like this first.
+Many embedded systems contain debugging mechanisms that aren't fully removed for release. This usually isn't true in popular consumer devices that have been out for some time, but it's always worth looking for something simple like this as a first step.
 
 There are hidden flags in the Java based Kindle GUI that get parsed from /mnt/us. (the user storage location exposed when the Kindle is connected over USB to a computer). Worth decompiling the Java to check for any obviously unsafe or hidden debug functionality. While there is quite a bit of hidden functionality that's exposed through this method, I didn't find much after a cursory look. Did manage to find a debug dialog that called python against a user script in the /mnt/us user store. Unfortunately, accessing the dialog would require a separate vulnerability and python being installed on the Kindle. Turns out python is only on the factory provisioning debug images and wiped during sales provisioning.
 
@@ -51,10 +51,10 @@ There are hidden flags in the Java based Kindle GUI that get parsed from /mnt/us
 The Kindle firmware update system has been used in the past to get code execution on the device via crafting trusted files. Downgrades are currently blocked, so definitely an interesting place to look for mistakes. Never got around to this, still an interesting avenue.
 
 ### Amazon Management Protocols
-Found a reference to a system() call that looked like it could be triggered remotely with parameters. Possibly dead code, never found out how to trigger it or if it was even possible to MITM the mechanism. Would be an interesting exercise to document the APIs.
+Found a reference to a system() call that looked like it could be triggered remotely with parameters. Possibly dead code, never found out how to trigger it or if it was even possible to MITM the mechanism. Would be an interesting exercise to document the APIs. Amazon may have a way to remotely provision devices with development certificates and functionality as there are strings referencing functionality like this.
 
 ### Search Bar Debug Commands
-On the Kindle filesystem, /usr/share/webkit-1.0/pillow/debug_cmds.json contains a mapping of hidden commands that can trigger script execution from the Kindle's search bar. Some of the commands are clearly stripped out in non-debug builds, but others still execute. Most importantly, these scripts all execute as root and can take parameters. Always good to audit these. The process that parses the user input and strips out potentially dangerous characters (script-executor I believe) looks good but would be worth fuzzing.
+On the Kindle filesystem, /usr/share/webkit-1.0/pillow/debug_cmds.json contains a mapping of hidden commands that can trigger script execution from the Kindle's search bar. Some of the commands are clearly stripped out in non-debug builds, but others still execute. Most importantly, these scripts all execute as root and can take parameters. Always good to audit these. The process that parses the user input and strips out potentially dangerous characters (script-executor I believe) looks good but would be worth fuzzing / auditing further.
 
 ## Kindle Debugging
 If we're going to try and develop an exploit on the Kindle, it helps to have some sort of debugging functionality and/or access to the actual firmware. This is somewhat of a catch-22. If you have a Kindle that's already jailbroken you can simply SSH in to a root shell using USBNetwork. On Kindles excluding the Oasis (and possibly the new Kindle 8th Generation), a serial port can be added to the device with a bit of soldering. Either way, having access to a shell makes development easier.
@@ -70,7 +70,7 @@ sudo mount -o loop rootfs.img root
 ## Analyzing the OS
 The first step is one of the hardest to define. Analyze the firmware and operating system and attempt to get a very high level understanding of how it works together. Ideally after doing this you'd know a few important details about the Kindle OS. Having shell access and basic knowledge of Linux helps quite a bit here.
 
-For example, lipc is the interprocess communication protocol that appears to wrap DBUS and is used for system actions. lipc-probe can be used to determine what properties you can get and set on the system. You can execute debug commands this way, reboot the system, set system configuration flags, pop up dialogs, etc. Here's how you reboot the system from the command line as an unprivileged user.
+For example, lipc is the interprocess communication protocol that appears to wrap DBUS and is used for system actions. lipc-probe can be used to determine what properties you can get and set on the system. You can execute debug commands this way, reboot the system, set system configuration flags, pop up dialogs, etc. Here's how you reboot the system from the command line as an unprivileged user:
 
 ```lipc-set-prop -s com.lab126.contentpackd rebootDevice 0```
 
@@ -85,7 +85,7 @@ Run through the debug search bar commands. ;dm writes system logs to the user st
 Once you finish a look around the operating system, you'll hopefully have a few good ideas on where to start. The most logical choice at the time was Webkit after a search for basic debug functionality that could lead to code execution failed.
 
 ## Crashing Webkit
-Because the version of Webkit on 5.6.5 is so old, it's potentially vulnerable to a number of CVEs. There's no reason to spent hundreds looking for something new if we can exploit an older flaw. In this case, the hardest part of the process was done for us. Always patch your system!
+Because the version of Webkit on 5.6.5 is so old, it's potentially vulnerable to a number of CVEs. There's no reason to spent hundreds looking for something new if we can exploit an older flaw. In this case, the hardest part of the process was done for us. Always patch your systems!
 
 There are several PoCs that crash the browser. If you watch system logs as the browser goes down, you'll get a stack trace from the mesquite process. Attach gdbserver to the process and look at the crash.
 
@@ -102,7 +102,7 @@ At this point, search for CVE PoC code and test it against the browser. There ar
 Both the chromium and the Gateway 3DS exploit code successfully crash the browser. I spent a bit of time adjusting the heap spray and debugging the crash remotely with GDB. With a few adjustments I got to a reliable crash where we control PC via the following:
 
 ```
-ldr	r3, [r3, #632]  ; 0x278
+ldr	r3, [r3, #632]  ; 0x278 -- We control the contents of r3 here.
 blx	r3
 ```
 
@@ -179,18 +179,18 @@ There happened to be a word that gets mapped into the code segment that when der
 
 In our case, the first instruction won't execute due to the PL condition code on the instruction. ([Here's](https://community.arm.com/groups/processors/blog/2010/07/16/condition-codes-1-condition-flags-and-codes) a good introduction to ARM condition codes.) The orrhi instruction will as the corresponding flags are set, and we end up moving PC somewhere further into the address space. In roughly one out of ten executions, this gets us code execution to our heap spray. I prototyped a simple exit call via jumping to libc.
 
-For a jailbreak, 10 reloads before code execution isn't bad at all. If we went down this route, the reliability could probably be improved through better understanding of the heap spray & CVE. The issue is that the word pointer to the interesting gadget only happens to exist on the Paperwhite 2 firmware.
+For a jailbreak, 10 reloads before code execution isn't bad at all. If we went down this route, the reliability could probably be improved through better understanding of the heap spray & CVE. The issue is that the word pointer to the interesting gadget only happens to exist on the Paperwhite 2 firmware. I couldn't find anything similar that controlled PC on the Voyage / Paperwhite 3.
 
 We can do better.
 
 ### Mesquite Dynamic Analysis
-The code segment at 00008000-000a0000 doesn't appear to be too helpful. What about 000a0000-000a2000 and 00a2000-00258000? The processes's heap might have something interesting written to it during execution.
+The code segment at `00008000-000a0000` doesn't appear to be too helpful. What about `000a0000-000a2000` and `00a2000-00258000`? The processes's heap might have something interesting written to it during execution.
 
 For this step, I connected IDA Pro to gdbserver and manually walked through the non ASLR'd address space. One interesting find were multiple pointers to the IP address of the webserver I was hosting to service the POC code. I figured there might be a small chance I could connect the Kindle to a network with a custom IP address that happened to decode to a useful set of PC modifying instructions.
 
-Thankfully, the discovery was better than that. When loading a URL in the Kindle browser, the pointer was updated to the full ASCII domain. The buffer also dynamically resized itself to whatever the user typed in the address bar.
+Thankfully, the discovery was better than that. When loading a URL in the Kindle browser, the pointer was updated to the full ASCII domain currently being visited. The buffer also dynamically resized itself to whatever the user typed in the address bar. There didn't seem to be a size limit either.
 
-We can now spray the address of the buffer that appears to mirror the address bar and get code execution to a URL.
+We can now spray the address of the buffer that appears to mirror the address bar and get code execution to a domain.
 
 ### Alphanumeric ARM Shellcode
 Alphanumeric ARM shellcode is a solved problem. See [Alphanumeric RISC ARM Shellcode] in Phrack 66 by Yves Younan and Pieter Philippaerts. There's an excellent example shellcode at the bottom of the article that executes a binary in the root filesystem. Unfortunately, the Kindle is EABI instead of the OABI the target shellcode was written for. The cache flush mechanism will have to change quite a bit, and the actual execve will need to take arguments. Because the user-store on the Kindle is mounted noexec, we can't simply execve a shell script. We need to execve /bin/sh and pass our script as an argument.
@@ -209,7 +209,7 @@ hexblog wrote an [article](http://www.hexblog.com/?p=111) on how to use IDA Pro 
 Here's an IDA Pro listing of the shellcode [before](shellcode_before_execution.asm) and [after](shellcode_after_execution.asm) execution.
 
 ### Staging the Exploit
-We're almost done with taking advantage of the crash. Still, there's one last issue. To trigger the exploit, you need to load a webpage containing the crash. Loading a webpage will update the contents of the address bar buffer with the URL of the page.
+We're almost done with taking advantage of the crash. Still, there's one last issue. To trigger the exploit, we'll need to load a webpage containing the crash. Loading a webpage will update the contents of the address bar buffer with the URL of the page.
 
 We get lucky again. If we stage the shellcode first (by requesting the user clicks a link with the target being the shellcode) then have them navigate to a shorter URL, the new URL will be overwrite part of the shellcode and null terminate itself. The rest of the shellcode will remain intact.
 

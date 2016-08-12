@@ -166,7 +166,7 @@ Also note that the heap and a pretty good chunk of other segments are marked as 
 ### Mesquite Static Analysis
 We can get the processor to dereference a value and jump to the result. Because Mesquite isn't PIE, we can search the small address space for interesting addresses to return to.
 
-I wrote a simple python script that would take all constant words in the code segment and check to see if they could be interpretted as "pointers" to the same area of code. If it happened to look like a pointer, we could spray that value (minus 0x278) and pass execution to somewhere in the same code segment. The script then dumped out where execution would go to and a list of ten or so instructions at that address.
+I wrote a simple python script that would take all constant words in the code segment and check to see if they could be interpreted as "pointers" to the same area of code. If it happened to look like a pointer, we could spray that value (minus 0x278) and pass execution to somewhere in the same code segment. The script then dumped out where execution would go to and a list of ten or so instructions at that address.
 
 The only interesting looking "gadget" I found was the following:
 ```

@@ -206,6 +206,8 @@ bbbb80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR80AR
 
 hexblog wrote an [article](http://www.hexblog.com/?p=111) on how to use IDA Pro and QEMU to simulate/RE the example shellcode in the Phrack article. It's a good way to watch what's going on during execution.
 
+Here's an IDA Pro listing of the shellcode [before](shellcode_before_execution.asm) and [after](shellcode_after_execution.asm) execution.
+
 ### Staging the Exploit
 We're almost done with taking advantage of the crash. Still, there's one last issue. To trigger the exploit, you need to load a webpage containing the crash. Loading a webpage will update the contents of the address bar buffer with the URL of the page.
 

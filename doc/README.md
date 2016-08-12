@@ -260,9 +260,9 @@ The VS flag doesn't appear to get set during the crash. As such, the stores/teq 
 
 ##### Local Execution
 
-Finally, there was one more development a few weeks later. A mobileread user determined that you could actually load the exploit code in the browser from the local user store. If you put the exploit code in the Kindle user share and navigated to file:///mnt/us/index.html in the Kindle browser, it would reliably execute. This bypassed the need to manipulate DNS and/or trust third parties hosting the exploit code.
+Finally, there was one more development a few weeks later. A mobileread user determined that you could actually load the exploit code in the browser from the local user store. If you put the exploit code in the Kindle user share and navigated to `file:///mnt/us/index.html` in the Kindle browser, it would reliably execute. This bypassed the need to manipulate DNS and/or trust third parties hosting the exploit code.
 
-The "file:///mnt/us/index.html" trick was interesting. I stepped through an execution of it in GDB and discovered that file:///mnt/us/index.html never got written to the address bar buffer. As such, the shell code gets loaded and executed without being altered or overwritten. This points to my understanding of the buffer I'm using being incomplete. Either way, it was a great find.
+The `file:///mnt/us/index.html` trick was interesting. I stepped through an execution of it in GDB and discovered that `file:///mnt/us/index.html` never got written to the address bar buffer. As such, the shell code gets loaded and executed without being altered or overwritten. This points to my understanding of the buffer I'm using being incomplete. Either way, it was a great find.
 
 ### Shell Script Execution
 At this point we can trigger the browser to execve /bin/sh /mnt/us/jb. This gives up shell execution as the browser user and group which is id=9000(framework) gid=0(root). We still need some form of root escalation before we're done.

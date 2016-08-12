@@ -281,7 +281,7 @@ I checked the permissions of /etc/uks to make sure I matched the correct permiss
 
 ```
  [root@kindle /]# ls -la /etc/uks/
- drwxrwxr-x 2 root root 1024 Sep 23 16:49 
+ drwxrwxr-x 2 root root 1024 Sep 23 16:49 
 ```
 
 Whoops! Didn't even bother looking for something this simple. Turns out the browser can already read/write/execute to pretty much every folder on the system due to a permissions failure. I'm unsure why group root has such permissions, but I'll take it.

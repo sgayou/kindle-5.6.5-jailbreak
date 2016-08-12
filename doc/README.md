@@ -336,6 +336,6 @@ I submitted the jailbreak package to Amazon Security around the twenty second of
 
 For the fix, Amazon did quite a few things. They sandboxed the browser, fixed the permissions issue, removed fc-cache.sh, and most likely patched Webkit. Webkit still crashes when executing the PoC. Unsure if that's because of the process running out of memory or some other issue.
 
-Embedded targets are a heck of a lot of fun to break. The security is usually a bit more lax and having to understand each new embedded system is always a blast.
+Consumer electronics and embedded systems in general are a heck of a lot of fun to break. The security is usually a bit more lax and having to understand each new embedded system is always a blast.
 
 Thanks to Lab126 Security, Cyril Cattiaux, Gateway 3DS, Yves Younan, Pieter Philippaerts, [NiLuJe](https://github.com/NiLuJe), and [Yifan Lu](http://yifan.lu/) for previous Kindle work.

@@ -319,6 +319,16 @@ And we're done. Here's the [final script](https://github.com/sgayou/kindle-5.6.5
 
 After the release I discovered a way to programatically execute debug search bar commands from the command line. There's a debug command execution field you can trigger from lipc. This would have made the jailbreak slightly less confusing as a few people struggled with what "Run ;fc-cache in the search bar" meant.
 
+## Execution Summary
+
+1. Have user copy script to Kindle internal storage. ![](images/s1main.png)
+2. Load buffer with shellcode via a href.
+3. Execute use-after-free.
+4. Use shellcode to execve /bin/sh /mnt/us/jb.
+5. Request user run ;fc-cache to enable mntroot rw.
+6. Copy community development key to /etc/uks.
+7. User can now install custom packages signed by community.
+
 ## In Conclusion
 The mesquite binaries were the same on all Kindles at the time. The jailbreak happened to work on every Kindle with a 5.6.5 firmware release with no changes required. Lucky!
 

@@ -4,7 +4,7 @@ This is a write-up on the development of the [Kindle 5.6.5 Webkit based jailbrea
 This document details the steps and thought processes I went through when developing the jailbreak. Ideally this will be a useful map or starting point for anyone looking at the system in the future. Most of this was written from memory after the fact, so there might be a few issues due to memory lapses. Please send any feedback or corrections to github.scott@gmail.com.
 
 ## Introduction
-The goal of this jailbreak was to gain root on the system with the least amount of effort required. As such, it takes advantage of Webkit crash PoC code that already exists. The jailbreak was developed in around 100 during August and September of 2015. It was then submitted to Amazon Security and finally released in February 2016 after patch with a fix was released.
+The goal of this jailbreak was to gain root on the system with the least amount of effort required. As such, it takes advantage of Webkit crash PoC code that already exists. The jailbreak was developed in around 100 hours during August and September of 2015. It was then submitted to Amazon Security and finally released in February 2016 after patch with a fix was released.
 
 ## History of Kindle Jailbreaks
 This section is not intended to be a complete or even entirely accurate description of previous Kindle jailbreaking efforts.

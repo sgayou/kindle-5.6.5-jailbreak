@@ -186,7 +186,7 @@ We can do better.
 ### Mesquite Dynamic Analysis
 The code segment at `00008000-000a0000` doesn't appear to be too helpful. What about `000a0000-000a2000` and `00a2000-00258000`? The processes's heap might have something interesting written to it during execution.
 
-For this step, I connected IDA Pro to gdbserver and manually walked through the non ASLR'd address space. One interesting find were multiple pointers to the IP address of the webserver I was hosting to service the POC code. I figured there might be a small chance I could connect the Kindle to a network with a custom IP address that happened to decode to a useful set of PC modifying instructions.
+For this step, I connected IDA Pro to gdbserver and manually walked through the non ASLR'd address space. One interesting find were multiple pointers to the IP address of the webserver I was hosting to serve the POC code. I figured there might be a small chance I could connect the Kindle to a network with a custom IP address that happened to decode to a useful set of PC modifying instructions.
 
 Thankfully, the discovery was better than that. When loading a URL in the Kindle browser, the pointer was updated to the full ASCII domain currently being visited. The buffer also dynamically resized itself to whatever the user typed in the address bar. There didn't seem to be a size limit either.
 

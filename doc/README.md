@@ -193,7 +193,7 @@ Thankfully, the discovery was better than that. When loading a URL in the Kindle
 We can now spray the address of the buffer that appears to mirror the address bar and get code execution to a domain.
 
 ### Alphanumeric ARM Shellcode
-Alphanumeric ARM shellcode is a solved problem. See [Alphanumeric RISC ARM Shellcode] in Phrack 66 by Yves Younan and Pieter Philippaerts. There's an excellent example shellcode at the bottom of the article that executes a binary in the root filesystem. Unfortunately, the Kindle is EABI instead of the OABI the target shellcode was written for. The cache flush mechanism will have to change quite a bit, and the actual execve will need to take arguments. Because the user-store on the Kindle is mounted noexec, we can't simply execve a shell script. We need to execve /bin/sh and pass our script as an argument.
+Alphanumeric ARM shellcode is a solved problem. See [Alphanumeric RISC ARM Shellcode](http://phrack.org/issues/66/12.html) in Phrack 66 by Yves Younan and Pieter Philippaerts. There's an excellent example shellcode at the bottom of the article that executes a binary in the root filesystem. Unfortunately, the Kindle is EABI instead of the OABI the target shellcode was written for. The cache flush mechanism will have to change quite a bit, and the actual execve will need to take arguments. Because the user-store on the Kindle is mounted noexec, we can't simply execve a shell script. We need to execve /bin/sh and pass our script as an argument.
 
 Writing the shellcode was probably the most time consuming part of the jailbreak process. It's a bit hard to intuitively grasp writing code using such a small subset of instructions and having to heavily rely on XOR operations.
 

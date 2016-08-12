@@ -291,6 +291,7 @@ Whoops! Didn't even bother looking for something this simple. Turns out the brow
 There's one more issue. If we try to write the key to the filesystem during shell script execution, we'll get an error that the filesystem is mounted read-only. We need a way to remount the filesystem as RW. This can be done by root but cannot be done by the framework user.
 
 There's a few possible ways to tackle this:
+
 1. Use the previous root escalation and run mntroot rw. Not ideal as this would require a hard reset of the Kindle and more user intervention
 2. Hard reset the system. There's another issue where the file-system stays mounted RW after the first boot. After a reboot, it will be mounted RO. Same issue as before.
 3. If we search the firmware for "mntroot rw", we'll see that it gets called in a script that runs when the user executes ;fc-cache from the search bar.

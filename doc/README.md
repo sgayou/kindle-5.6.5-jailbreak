@@ -74,7 +74,7 @@ For example, lipc is the interprocess communication protocol that appears to wra
 
 ```lipc-set-prop -s com.lab126.contentpackd rebootDevice 0```
 
-Another important detail is that Amazon left gdbserver on the Kindle. Great! That makes debugging crashes exponentially easier and we don't have to try and cross-compile it.
+Another important detail is that Amazon left gdb on the Kindle. Great! That makes debugging crashes exponentially easier and we don't have to try and cross-compile it.
 
 Figure out what libraries the system is using. Are they custom to Lab126 or open source? Can we get custom user input to the subsystems? Does anything look easy to fuzz? What system protections are enabled? Do system logs have any hints about potential system flaws?
 
@@ -87,7 +87,7 @@ Once you finish a look around the operating system, you'll hopefully have a few 
 ## Crashing Webkit
 Because the version of Webkit on 5.6.5 is so old, it's potentially vulnerable to a number of CVEs. There's no reason to spend hundreds looking for something new if we can exploit an older flaw. In this case, the hardest part of the process was done for us. Always patch your systems!
 
-There are several PoCs that crash the browser. If you watch system logs as the browser goes down, you'll get a stack trace from the mesquite process. Attach gdbserver to the process and look at the crash.
+There are several PoCs that crash the browser. If you watch system logs as the browser goes down, you'll get a stack trace from the mesquite process. Attach gdb to the process and look at the crash.
 
 ```
 ps -aux | grep mesquite

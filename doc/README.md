@@ -36,7 +36,7 @@ Below are some of the more obvious avenues to explore.
 * Amazon management protocols.
 * Search bar debug commands.
 
-### Ebook loading
+### E-book loading
 Fertile ground for new exploits. To my knowledge, these subsystems haven't been publicly fuzzed yet. The Kindle appears to use a PDF library provided by or developed with Foxit. Most other documents are parsed by gigantic shared objects. I didn't go down this route due to the complexity of modeling various formats, but this would be an optimal route if nothing else was found. I spent a bit of time fuzzing older versions of some of the libraries the Kindle was using with afl, but no dice.
 
 ### Experimental Browser

@@ -321,13 +321,14 @@ After the release I discovered a way to programatically execute debug search bar
 
 ## Execution Summary
 
-1. Have user copy script to Kindle internal storage. [Screenshot 1](images/s1main.png)
-2. Load buffer with shellcode via a href. [Screenshot 2](images/s2s1.png)
-3. Execute use-after-free.
-4. Use shellcode to execve /bin/sh /mnt/us/jb. Updates now in title bar. [Screenshot 3](images/s3exec.png)
-5. Request user run ;fc-cache to enable mntroot rw. [Screenshot 4](images/s4run.png)
-6. Copy community development key to /etc/uks. [Screenshot 5](images/s5done.png)
-7. User can now install custom packages signed by community. [Screenshot 6](images/s6up.png)
+1. Have user copy script to Kindle internal storage.
+2. Instruct user to navigate to jailbreak page. [Screenshot 1](images/s1main.png)
+3. Load buffer with shellcode via a href. [Screenshot 2](images/s2s1.png)
+4. Execute use-after-free.
+5. Use shellcode to execve /bin/sh /mnt/us/jb. Updates now in title bar. [Screenshot 3](images/s3exec.png)
+6. Request user run ;fc-cache to enable mntroot rw. [Screenshot 4](images/s4run.png)
+7. Copy community development key to /etc/uks. [Screenshot 5](images/s5done.png)
+8. User can now install custom packages signed by community. [Screenshot 6](images/s6up.png)
 
 ## In Conclusion
 The mesquite binaries were the same on all Kindles at the time. The jailbreak happened to work on every Kindle with a 5.6.5 firmware release with no changes required. Lucky!

@@ -188,7 +188,7 @@ The code segment at `00008000-000a0000` doesn't appear to be too helpful. What a
 
 For this step, I connected IDA Pro to gdbserver and manually walked through the non ASLR'd address space. One interesting find were multiple pointers to the IP address of the webserver I was hosting to serve the POC code. I figured there might be a small chance I could connect the Kindle to a network with a custom IP address that happened to decode to a useful set of PC modifying instructions.
 
-Thankfully, the discovery was better than that. When loading a URL in the Kindle browser, the pointer was updated to the full ASCII domain currently being visited. The buffer also dynamically resized itself to whatever the user typed in the address bar. There didn't seem to be a size limit either.
+Thankfully, the discovery was better than that. When loading a URL in the Kindle browser, the pointer was updated to the full ASCII domain currently being visited. The buffer also dynamically resized itself to whatever the user typed in the address bar. There didn't seem to be a size limit either. Finally, the buffer is in RWX memory.
 
 We can now spray the address of the buffer that appears to mirror the address bar and get code execution to a domain.
 

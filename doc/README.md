@@ -267,7 +267,7 @@ Finally, there was one more development a few weeks later. A mobileread user det
 The `file:///mnt/us/index.html` trick was interesting. I stepped through an execution of it in GDB and discovered that `file:///mnt/us/index.html` never got written to the address bar buffer. As such, the shell code gets loaded and executed without being altered or overwritten. This points to my understanding of the buffer I'm using being incomplete. Either way, it was a great find.
 
 ### Shell Script Execution
-At this point we can trigger the browser to execve /bin/sh /mnt/us/jb. This gives up shell execution as the browser user and group which is id=9000(framework) gid=0(root). We still need some form of root escalation before we're done.
+At this point we can trigger the browser to execve /bin/sh /mnt/us/jb. This gives us shell execution as the browser user and group which is id=9000(framework) gid=0(root). We still need some form of root escalation before we're done.
 
 There was an older prvilege escalation method that involved writing a file to /var/local/system that would be sourced by another script running as root during boot. Unfortunately, the browser user was unable to write to this file due to permissions issues.
 

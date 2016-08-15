@@ -85,7 +85,7 @@ Run through the debug search bar commands. ;dm writes system logs to the user st
 Once you finish a look around the operating system, you'll hopefully have a few good ideas on where to start. The most logical choice at the time was Webkit after a search for basic debug functionality that could lead to code execution failed.
 
 ## Crashing Webkit
-Because the version of Webkit on 5.6.5 is so old, it's potentially vulnerable to a number of CVEs. There's no reason to spend hundreds looking for something new if we can exploit an older flaw. In this case, the hardest part of the process was done for us. Always patch your systems!
+Because the version of Webkit on 5.6.5 is so old, it's potentially vulnerable to a number of CVEs. There's no reason to spend hundreds of hours looking for something new if we can exploit an older flaw. In this case, the hardest part of the process was done for us. Always patch your systems!
 
 There are several PoCs that crash the browser. If you watch system logs as the browser goes down, you'll get a stack trace from the mesquite process. Attach gdb to the process and look at the crash.
 
